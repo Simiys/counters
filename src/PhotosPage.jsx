@@ -179,7 +179,7 @@ export const PhotosPage = () => {
               <img
                 width={250}
                 height={300}
-                src={pair.ref}
+                src={pair.aiRef}
                 alt={'ИИ изорбражение'}
                 onClick={() => handleAddIncorrect(pair, i)}
               ></img>
