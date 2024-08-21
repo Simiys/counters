@@ -4,8 +4,8 @@ import { useEffect, useState, useRef } from 'react';
 
 const PATH = 'http://localhost:8080/api/';
 
-const getRequest = (request, login) => {
-  return fetch(PATH + request + '?login=' + login + '&type=mercury', { method: 'GET' }).then((response) => {
+const getRequest = (request, login, type) => {
+  return fetch(PATH + request + '?login=' + login + '&type=' + type, { method: 'GET' }).then((response) => {
     if (!response.ok) {
       throw new Error('Network response was not ok'); // Обработка ошибок сети
     }
@@ -145,7 +145,7 @@ export const PhotosPage = () => {
   };
 
   const fetchPhotos = () => {
-    getRequest('photos', login)
+    getRequest('photos', login, type)
       .then((data) => {
         setSource(data);
       })
@@ -208,7 +208,7 @@ export const PhotosPage = () => {
         <Button variant="outlined" onClick={handleStopButton}>
           Стоп
         </Button>
-        <Button variant="outlined" onClick={handleStartButton}>
+        <Button variant="outlined" onClick={handleStartButton} disabled={source.length === 0}>
           Старт
         </Button>
 
