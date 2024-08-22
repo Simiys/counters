@@ -58,26 +58,31 @@ export const PhotosPage = () => {
   // }, []);
 
   useEffect(() => {
-    if (isRunning) {
+    if (isRunning && source.length !== 0) {
       const loadImages = () => {
-        const arr = [];
-        let currentIndex = index;
+        setResp((prevResp) => {
+          const newResp = prevResp.concat(images);
+          const arr = [];
+          let currentIndex = index;
 
-        for (let j = 0; j < display; j++) {
-          arr.push(source[currentIndex]);
-          currentIndex++;
-          if (currentIndex === source.length) {
-            sendData();
-            currentIndex = 0;
-            fetchPhotos();
-            break;
+          for (let j = 0; j < display; j++) {
+            arr.push(source[currentIndex]);
+            currentIndex++;
+            if (currentIndex === source.length) {
+              const finalResp = newResp.concat(arr);
+              sendData(finalResp);
+              setSource([]);
+              currentIndex = 0;
+              fetchPhotos();
+              break;
+            }
           }
-        }
 
-        const newResp = resp.concat(arr); // Создаем новый массив на основе текущего `resp` и `arr`
-        setResp(newResp); // Устанавливаем новое значение для `resp`
-        setImages(arr); // Обновляем изображения
-        setIndex(currentIndex); // Обновляем индекс для следующего запуска
+          setImages(arr); // Обновляем изображения
+          setIndex(currentIndex); // Обновляем индекс для следующего запуска
+
+          return newResp;
+        });
       };
 
       intervalRef.current = setInterval(loadImages, seconds);
@@ -88,17 +93,15 @@ export const PhotosPage = () => {
     }
   }, [isRunning, display, source, index]);
 
-  const sendData = () => {
-    let imgs = [...resp];
+  const sendData = (data) => {
+    let imgs = data;
     for (let i = 0; i < imgs.length; i++) {
       imgs[i].status = imgs[i].status === 'UNCHECKED' ? 'CHECKED' : imgs[i].status;
     }
     let request = {
       photos: imgs,
-      sentPhotos: source,
       login: login
     };
-    console.log(request);
     postRequest('photos', request)
       .then((resp) => {
         if (!resp) {
