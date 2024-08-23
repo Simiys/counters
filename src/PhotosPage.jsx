@@ -2,7 +2,7 @@ import { Button, FormControl, InputLabel, Select, MenuItem, TextField } from '@m
 import Box from '@mui/material/Box';
 import { useEffect, useState, useRef } from 'react';
 
-const PATH = 'http://localhost:8080/api/';
+const PATH = 'http://147.45.154.176:8080/api/';
 
 const getRequest = (request, login, type) => {
   return fetch(PATH + request + '?login=' + login + '&type=' + type, { method: 'GET' }).then((response) => {
