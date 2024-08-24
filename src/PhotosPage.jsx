@@ -5,13 +5,18 @@ import { useEffect, useState, useRef } from 'react';
 const PATH = 'http://localhost:8080/api/';
 
 const getRequest = (request, login, type) => {
-  return fetch(PATH + request + '?login=' + login + '&type=' + type, { method: 'GET' }).then((response) => {
+  const encodedType = encodeURIComponent(type);
+
+  return fetch(PATH + request + '?login=' + encodeURIComponent(login) + '&type=' + encodedType, {
+    method: 'GET'
+  }).then((response) => {
     if (!response.ok) {
       throw new Error('Network response was not ok'); // Обработка ошибок сети
     }
     return response.json();
   });
 };
+
 const postRequest = (request, body) => {
   return fetch(PATH + request, {
     // Возвращаем fetch, чтобы возвращать Promise
