@@ -2,7 +2,7 @@ import { Button, FormControl, InputLabel, Select, MenuItem, TextField } from '@m
 import Box from '@mui/material/Box';
 import { useEffect, useState, useRef } from 'react';
 
-const PATH = 'http://147.45.154.176:8080/api/';
+const PATH = 'http://localhost/api/';
 
 const getRequest = (request, login, type) => {
   const encodedType = encodeURIComponent(type);
@@ -62,7 +62,7 @@ export const PhotosPage = () => {
     'Нева 301 1S0',
     'СО-2М',
     'СО-2',
-    'ЦЭ6807Б ',
+    'ЦЭ6807Б',
     'СО-ИБМ3',
     'СОЛО',
     'Гранит-1',
@@ -226,37 +226,13 @@ export const PhotosPage = () => {
   return (
     <Box gap={1} display="flex" flexDirection="column" alignItems="center" minHeight="100hv" flexWrap="wrap">
       <Box
-        gap={5}
-        display="flex"
+        gap={2}
+        display={'flex'}
         flexDirection="row"
-        alignItems="center"
+        alignItems={'center'}
         flexWrap="wrap"
-        sx={{ maxWidth: '1200px', marginBottom: '10px', marginLeft: '0px' }}
+        sx={{ maxWidth: '1200px', marginBottom: '10px', marginLeft: '0px', paddingTop: 3 }}
       >
-        {images.map((pair, i) => (
-          <Box display="flex" flexDirection="row" alignItems="center" key={i} gap={2}>
-            <Box border={pair.status === 'DOUBT' ? '3px solid yellow' : 'none'}>
-              <img
-                width={250}
-                height={300}
-                src={pair.ref}
-                alt={'ИИ изорбражение'}
-                onClick={() => handleAddDoubt(pair, i)}
-              ></img>
-            </Box>
-            <Box border={pair.status === 'INCORRECT' ? '3px solid red' : 'none'}>
-              <img
-                width={250}
-                height={300}
-                src={pair.aiRef}
-                alt={'ИИ изорбражение'}
-                onClick={() => handleAddIncorrect(pair, i)}
-              ></img>
-            </Box>
-          </Box>
-        ))}
-      </Box>
-      <Box gap={2} display={'flex'} flexDirection="row" alignItems={'center'}>
         <TextField label="Логин" value={login} onChange={handleLoginChange}></TextField>
         <Button variant="outlined" onClick={fetchPhotos}>
           Получить фотографии
@@ -297,6 +273,37 @@ export const PhotosPage = () => {
         <TextField sx={{ width: 100 }} label="Обработано" value={checkedCount}>
           {checkedCount}
         </TextField>
+      </Box>
+      <Box
+        gap={5}
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        flexWrap="wrap"
+        sx={{ maxWidth: '1200px', marginBottom: '10px', marginLeft: '0px' }}
+      >
+        {images.map((pair, i) => (
+          <Box display="flex" flexDirection="row" alignItems="center" key={i} gap={2}>
+            <Box border={pair.status === 'DOUBT' ? '3px solid yellow' : 'none'}>
+              <img
+                width={250}
+                height={300}
+                src={pair.ref}
+                alt={'ИИ изорбражение'}
+                onClick={() => handleAddDoubt(pair, i)}
+              ></img>
+            </Box>
+            <Box border={pair.status === 'INCORRECT' ? '3px solid red' : 'none'}>
+              <img
+                width={250}
+                height={300}
+                src={pair.aiRef}
+                alt={'ИИ изорбражение'}
+                onClick={() => handleAddIncorrect(pair, i)}
+              ></img>
+            </Box>
+          </Box>
+        ))}
       </Box>
     </Box>
   );
