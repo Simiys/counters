@@ -11,7 +11,7 @@ const getRequest = (request, login, type) => {
     method: 'GET'
   }).then((response) => {
     if (!response.ok) {
-      throw new Error('Network response was not ok'); // Обработка ошибок сети
+      throw new Error('Network response was not ok');
     }
     return response.json();
   });
@@ -19,7 +19,6 @@ const getRequest = (request, login, type) => {
 
 const postRequest = (request, body) => {
   return fetch(PATH + request, {
-    // Возвращаем fetch, чтобы возвращать Promise
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -27,13 +26,15 @@ const postRequest = (request, body) => {
     body: JSON.stringify(body)
   }).then((response) => {
     if (!response.ok) {
-      throw new Error('Network response was not ok'); // Обработка ошибок сети
+      throw new Error('Network response was not ok');
     }
-    return response.ok; // Возвращаем true или false в зависимости от ответа
+    return response.ok;
   });
 };
 
 export const PhotosPage = () => {
+  const [allCount, setAllCount] = useState(0);
+  const [checkedCount, setCheckedCount] = useState(0);
   const [images, setImages] = useState([]);
   const [source, setSource] = useState([]);
   const [resp, setResp] = useState([]);
@@ -127,8 +128,8 @@ export const PhotosPage = () => {
             }
           }
 
-          setImages(arr); // Обновляем изображения
-          setIndex(currentIndex); // Обновляем индекс для следующего запуска
+          setImages(arr);
+          setIndex(currentIndex);
 
           return newResp;
         });
@@ -190,7 +191,7 @@ export const PhotosPage = () => {
 
   const handleSetType = (e) => {
     setType(e.target.value);
-    console.log(type);
+    fetchTypeInfo(e.target.value);
   };
 
   const handleSetDisplay = (e) => {
@@ -204,6 +205,21 @@ export const PhotosPage = () => {
       })
       .catch((error) => {
         console.error('Error fetching photos:', error);
+      });
+  };
+
+  const fetchTypeInfo = (type) => {
+    const encodedType = encodeURIComponent(type);
+    fetch(PATH + 'cInfo?type=' + encodedType, { method: 'GET' })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setAllCount(data[0]);
+        setCheckedCount(data[1]);
       });
   };
 
@@ -275,6 +291,12 @@ export const PhotosPage = () => {
             ))}
           </Select>
         </FormControl>
+        <TextField sx={{ width: 100 }} label="Всего" value={allCount}>
+          {allCount}
+        </TextField>
+        <TextField sx={{ width: 100 }} label="Обработано" value={checkedCount}>
+          {checkedCount}
+        </TextField>
       </Box>
     </Box>
   );
