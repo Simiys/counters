@@ -231,55 +231,60 @@ export const PhotosPage = () => {
       <Box
         gap={2}
         display={'flex'}
+        flexWrap={'wrap'}
         flexDirection="row"
         alignItems={'center'}
-        sx={{ marginBottom: '10px', marginLeft: '0px', paddingTop: 3 }}
+        sx={{ maxWidth: '1400px', marginBottom: '10px', marginLeft: '0px', paddingTop: 3 }}
       >
-        <TextField label="Логин" value={login} onChange={handleLoginChange}></TextField>
-        <Button variant="outlined" onClick={fetchPhotos}>
-          Получить фотографии
-        </Button>
-        <FormControl>
-          <InputLabel id="select-label">Выберите опцию</InputLabel>
-          <Select
-            labelId="select-label"
-            id="select"
-            defaultValue={display}
-            label="Выберите опцию"
-            onChange={handleSetDisplay}
-          >
-            <MenuItem value="2">1 x 4</MenuItem>
-            <MenuItem value="4">2 x 4</MenuItem>
-          </Select>
-        </FormControl>
-        <Button variant="outlined" onClick={handleStopButton}>
-          Стоп
-        </Button>
-        <Button variant="outlined" onClick={handleStartButton} disabled={source.length === 0}>
-          Старт
-        </Button>
-        <Box width={200}>
-          <Slider
-            value={seconds}
-            onChange={(event, newValue) => setSeconds(newValue)}
-            min={1000}
-            max={10000}
-            step={500}
-            valueLabelDisplay="auto"
-          />
+        <Box flexDirection="row" gap={2} display={'flex'}>
+          <TextField label="Логин" value={login} onChange={handleLoginChange}></TextField>
+          <Button variant="outlined" onClick={fetchPhotos}>
+            Получить фотографии
+          </Button>
+          <FormControl>
+            <InputLabel id="select-label">Выберите опцию</InputLabel>
+            <Select
+              labelId="select-label"
+              id="select"
+              defaultValue={display}
+              label="Выберите опцию"
+              onChange={handleSetDisplay}
+            >
+              <MenuItem value="2">1 x 4</MenuItem>
+              <MenuItem value="4">2 x 4</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
+        <Box flexDirection="row" gap={2} display={'flex'}>
+          <Button variant="outlined" onClick={handleStopButton}>
+            Стоп
+          </Button>
+          <Button variant="outlined" onClick={handleStartButton} disabled={source.length === 0}>
+            Старт
+          </Button>
+          <Box width={200}>
+            <Slider
+              value={seconds}
+              onChange={(event, newValue) => setSeconds(newValue)}
+              min={1000}
+              max={10000}
+              step={500}
+              valueLabelDisplay="auto"
+            />
+          </Box>
 
-        <FormControl>
-          <InputLabel id="select-label">Выберите опцию</InputLabel>
-          <Select labelId="select-label" id="select" value={type} label="Выберите опцию" onChange={handleSetType}>
-            <MenuItem disabled>{'Тип | Всего | обработано'}</MenuItem>
-            {types.map((typ, i) => (
-              <MenuItem id={i} value={typ}>
-                {typ}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          <FormControl>
+            <InputLabel id="select-label">Выберите опцию</InputLabel>
+            <Select labelId="select-label" id="select" value={type} label="Выберите опцию" onChange={handleSetType}>
+              <MenuItem disabled>{'Тип | Всего | обработано'}</MenuItem>
+              {types.map((typ, i) => (
+                <MenuItem id={i} value={typ}>
+                  {typ}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
       </Box>
       <Box
         gap={5}
