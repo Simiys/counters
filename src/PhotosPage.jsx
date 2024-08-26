@@ -129,6 +129,7 @@ export const PhotosPage = () => {
               setSource([]);
               currentIndex = 0;
               fetchPhotos();
+              fetchTypes();
               break;
             }
           }
@@ -195,6 +196,7 @@ export const PhotosPage = () => {
   };
 
   const handleSetType = (e) => {
+    setIsRunning(false);
     setType(e.target.value);
   };
 
