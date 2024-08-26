@@ -1,5 +1,6 @@
 import { Button, FormControl, InputLabel, Select, MenuItem, TextField } from '@mui/material';
 import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
 import { useEffect, useState, useRef } from 'react';
 
 const PATH = 'http://localhost/api/';
@@ -50,7 +51,8 @@ export const PhotosPage = () => {
 
   const types = [
     'Нева 101 1S0',
-    'ЦЭ6807П, СЕ 101 R5.1 145 М6',
+    'ЦЭ6807П',
+    'СЕ 101 R5.1 145 М6',
     'Меркурий 201.5',
     'Меркурий 202.5',
     'Меркурий 201.1',
@@ -144,6 +146,7 @@ export const PhotosPage = () => {
   }, [isRunning, display, source, index]);
 
   const sendData = (data) => {
+    setCheckedCount((prev) => prev + data.length);
     let imgs = data;
     for (let i = 0; i < imgs.length; i++) {
       imgs[i].status = imgs[i].status === 'UNCHECKED' ? 'CHECKED' : imgs[i].status;
@@ -231,7 +234,7 @@ export const PhotosPage = () => {
         flexDirection="row"
         alignItems={'center'}
         flexWrap="wrap"
-        sx={{ maxWidth: '1200px', marginBottom: '10px', marginLeft: '0px', paddingTop: 3 }}
+        sx={{ maxWidth: '1400px', marginBottom: '10px', marginLeft: '0px', paddingTop: 3 }}
       >
         <TextField label="Логин" value={login} onChange={handleLoginChange}></TextField>
         <Button variant="outlined" onClick={fetchPhotos}>
@@ -256,6 +259,16 @@ export const PhotosPage = () => {
         <Button variant="outlined" onClick={handleStartButton} disabled={source.length === 0}>
           Старт
         </Button>
+        <Box width={200}>
+          <Slider
+            value={seconds}
+            onChange={(event, newValue) => setSeconds(newValue)}
+            min={1000}
+            max={10000}
+            step={500}
+            valueLabelDisplay="auto"
+          />
+        </Box>
 
         <FormControl>
           <InputLabel id="select-label">Выберите опцию</InputLabel>
