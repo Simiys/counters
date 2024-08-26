@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { useEffect, useState, useRef } from 'react';
 
-const PATH = 'http://localhost/api/';
+const PATH = 'http://147.45.154.176:8080/api/';
 
 const getRequest = (request, login, type) => {
   const encodedType = encodeURIComponent(type);
@@ -34,13 +34,12 @@ const postRequest = (request, body) => {
 };
 
 export const PhotosPage = () => {
-  const [allCount, setAllCount] = useState(0);
-  const [checkedCount, setCheckedCount] = useState(0);
   const [images, setImages] = useState([]);
   const [source, setSource] = useState([]);
   const [resp, setResp] = useState([]);
   const [display, setDisplay] = useState(4);
   const [type, setType] = useState('CОЛО');
+  const [types, setTypes] = useState([]);
 
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef(null);
@@ -49,65 +48,69 @@ export const PhotosPage = () => {
 
   const [index, setIndex] = useState(0);
 
-  const types = [
-    'Нева 101 1S0',
-    'ЦЭ6807П',
-    'СЕ 101 R5.1 145 М6',
-    'Меркурий 201.5',
-    'Меркурий 202.5',
-    'Меркурий 201.1',
-    'СЕ 101 R5 144 М6',
-    'СЕ 101 S6 145 M6',
-    'МАРС-1,0-11-Р4-5(60)-М',
-    'Нева 103 1SO',
-    'СО-51ПК',
-    'Нева 301 1S0',
-    'СО-2М',
-    'СО-2',
-    'ЦЭ6807Б',
-    'СО-ИБМ3',
-    'СОЛО',
-    'Гранит-1',
-    'СЕ 101 R5 145 M6',
-    'Меркурий 203.1',
-    'СО-И449',
-    'СО-5',
-    'Лейне Электро-01',
-    'Меркурий-203.1 31826-07',
-    'СЕ 200 S6 145 M6',
-    'СОЛО-1S',
-    'СО-505',
-    'СЕ 200 R5 145 М6',
-    'СО-2М2',
-    'ЦЭ6807БК',
-    'СЕ 101',
-    'Нева 103 1S0',
-    'ЦЭ6807В',
-    'Меркурий 201.7',
-    'СОЭ-52/50-11Ш',
-    'СЕ 101 S6 145',
-    'Ладога 01.02',
-    'СЕ 101 S10 144 М6',
-    'ЦЭ6807-1П',
-    'СО-И446',
-    'СЕ 200 ',
-    'СЭО-1.15.402 ',
-    'СО-ЭЭ6706',
-    'СО-И4491М2-5',
-    'Нева-101 1SO',
-    'Нева-103 1SO',
-    'СЭО-1.15.702',
-    'СЭО-1.12.402/1',
-    'СО-И449М1-2',
-    'СО-И449М2-5',
-    'СО-5У',
-    'СО-50МЭ',
-    'СОЭ-52',
-    'СОЭ-52/60-01Ш',
-    'СОЭ-52/60-31Ш',
-    'СО-ЭУ10',
-    'СЭО-1.12.402'
-  ];
+  // setTypes([
+  //   'Нева 101 1S0',
+  //   'ЦЭ6807П',
+  //   'СЕ 101 R5.1 145 М6',
+  //   'Меркурий 201.5',
+  //   'Меркурий 202.5',
+  //   'Меркурий 201.1',
+  //   'СЕ 101 R5 144 М6',
+  //   'СЕ 101 S6 145 M6',
+  //   'МАРС-1,0-11-Р4-5(60)-М',
+  //   'Нева 103 1SO',
+  //   'СО-51ПК',
+  //   'Нева 301 1S0',
+  //   'СО-2М',
+  //   'СО-2',
+  //   'ЦЭ6807Б',
+  //   'СО-ИБМ3',
+  //   'СОЛО',
+  //   'Гранит-1',
+  //   'СЕ 101 R5 145 M6',
+  //   'Меркурий 203.1',
+  //   'СО-И449',
+  //   'СО-5',
+  //   'Лейне Электро-01',
+  //   'Меркурий-203.1 31826-07',
+  //   'СЕ 200 S6 145 M6',
+  //   'СОЛО-1S',
+  //   'СО-505',
+  //   'СЕ 200 R5 145 М6',
+  //   'СО-2М2',
+  //   'ЦЭ6807БК',
+  //   'СЕ 101',
+  //   'Нева 103 1S0',
+  //   'ЦЭ6807В',
+  //   'Меркурий 201.7',
+  //   'СОЭ-52/50-11Ш',
+  //   'СЕ 101 S6 145',
+  //   'Ладога 01.02',
+  //   'СЕ 101 S10 144 М6',
+  //   'ЦЭ6807-1П',
+  //   'СО-И446',
+  //   'СЕ 200 ',
+  //   'СЭО-1.15.402 ',
+  //   'СО-ЭЭ6706',
+  //   'СО-И4491М2-5',
+  //   'Нева-101 1SO',
+  //   'Нева-103 1SO',
+  //   'СЭО-1.15.702',
+  //   'СЭО-1.12.402/1',
+  //   'СО-И449М1-2',
+  //   'СО-И449М2-5',
+  //   'СО-5У',
+  //   'СО-50МЭ',
+  //   'СОЭ-52',
+  //   'СОЭ-52/60-01Ш',
+  //   'СОЭ-52/60-31Ш',
+  //   'СО-ЭУ10',
+  //   'СЭО-1.12.402'
+  // ]);
+
+  useEffect(() => {
+    fetchTypes();
+  }, []);
 
   useEffect(() => {
     if (isRunning && source.length !== 0) {
@@ -146,7 +149,6 @@ export const PhotosPage = () => {
   }, [isRunning, display, source, index]);
 
   const sendData = (data) => {
-    setCheckedCount((prev) => prev + data.length);
     let imgs = data;
     for (let i = 0; i < imgs.length; i++) {
       imgs[i].status = imgs[i].status === 'UNCHECKED' ? 'CHECKED' : imgs[i].status;
@@ -193,8 +195,9 @@ export const PhotosPage = () => {
   };
 
   const handleSetType = (e) => {
-    setType(e.target.value);
-    fetchTypeInfo(e.target.value);
+    let unfType = e.target.value;
+    unfType = unfType.split(' |')[0];
+    setType(unfType);
   };
 
   const handleSetDisplay = (e) => {
@@ -210,10 +213,8 @@ export const PhotosPage = () => {
         console.error('Error fetching photos:', error);
       });
   };
-
-  const fetchTypeInfo = (type) => {
-    const encodedType = encodeURIComponent(type);
-    fetch(PATH + 'cInfo?type=' + encodedType, { method: 'GET' })
+  const fetchTypes = () => {
+    fetch(PATH + 'typesInfo', { method: 'GET' })
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -221,8 +222,7 @@ export const PhotosPage = () => {
         return response.json();
       })
       .then((data) => {
-        setAllCount(data[0]);
-        setCheckedCount(data[1]);
+        setTypes(data);
       });
   };
 
@@ -233,8 +233,7 @@ export const PhotosPage = () => {
         display={'flex'}
         flexDirection="row"
         alignItems={'center'}
-        flexWrap="wrap"
-        sx={{ maxWidth: '1400px', marginBottom: '10px', marginLeft: '0px', paddingTop: 3 }}
+        sx={{ marginBottom: '10px', marginLeft: '0px', paddingTop: 3 }}
       >
         <TextField label="Логин" value={login} onChange={handleLoginChange}></TextField>
         <Button variant="outlined" onClick={fetchPhotos}>
@@ -273,6 +272,7 @@ export const PhotosPage = () => {
         <FormControl>
           <InputLabel id="select-label">Выберите опцию</InputLabel>
           <Select labelId="select-label" id="select" value={type} label="Выберите опцию" onChange={handleSetType}>
+            <MenuItem disabled>{'Тип | Всего | обработано'}</MenuItem>
             {types.map((typ, i) => (
               <MenuItem id={i} value={typ}>
                 {typ}
@@ -280,12 +280,6 @@ export const PhotosPage = () => {
             ))}
           </Select>
         </FormControl>
-        <TextField sx={{ width: 100 }} label="Всего" value={allCount}>
-          {allCount}
-        </TextField>
-        <TextField sx={{ width: 100 }} label="Обработано" value={checkedCount}>
-          {checkedCount}
-        </TextField>
       </Box>
       <Box
         gap={5}
