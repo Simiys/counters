@@ -195,9 +195,7 @@ export const PhotosPage = () => {
   };
 
   const handleSetType = (e) => {
-    let unfType = e.target.value;
-    unfType = unfType.split(' |')[0];
-    setType(unfType);
+    setType(e.target.value);
   };
 
   const handleSetDisplay = (e) => {
@@ -205,7 +203,7 @@ export const PhotosPage = () => {
   };
 
   const fetchPhotos = () => {
-    getRequest('photos', login, type)
+    getRequest('photos', login, type.split(' |')[0])
       .then((data) => {
         setSource(data);
       })
